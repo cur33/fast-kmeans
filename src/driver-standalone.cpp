@@ -54,7 +54,11 @@ int main(int argc, char **argv) {
     Dataset *x = load_dataset(filename);
     Kmeans *algorithm = get_algorithm(algorithm_name);
 
-    Dataset *initialCenters = init_centers_kmeanspp_v2(*x, k);
+    Dataset *initialCenters = init_centers_kmeanspp(*x, k);
+    // Dataset *initialCenters = init_centers_kmeanspp_v2(*x, k);
+
+    initialCenters->print();
+    std::cout << std::endl;
 
     unsigned short *assignment = new unsigned short[x->n];
 
@@ -62,7 +66,8 @@ int main(int argc, char **argv) {
 
     algorithm->initialize(x, k, assignment, 1);
 
-    algorithm->run(10000);
+    int numIterations = algorithm->run(10000);
+    std::cout << numIterations << "\n";
 
     Dataset const *finalCenters = algorithm->getCenters();
     if (output == "centers") {
